@@ -1,8 +1,8 @@
 // 管理账号信息
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
-const IPurl = 'https://app.techtextile.com.cn/api/';
-const imgurl = 'https://app.techtextile.com.cn/';
+const IPurl = 'http://syczt.800123456.vip:8099';
+const imgurl = 'http://syczt.800123456.vip:8099';
 
 /**
  * 请求头
@@ -52,7 +52,7 @@ function request(url, params, method, onSuccess, onFailed) {
 			console.log('响应：', res.data);
 
 			// if (res.data) {
-			if (res.data.code == -1) {
+			/*if (res.data.code == -1) {
 				if (params.login_type == 1) {
 					//一进来就登录失败
 					return
@@ -75,7 +75,7 @@ function request(url, params, method, onSuccess, onFailed) {
 				},1000)
 				return
 
-			}
+			}*/
 
 			/** start 根据需求 接口的返回状态码进行处理 */
 			onSuccess(res);

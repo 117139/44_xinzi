@@ -4,7 +4,7 @@
 			
 			<view class="input-group">
 				<view class="int_tip1">当前注册手机号</view>
-				<view class="int_tip1">+86 {{tel_j}}</view>
+				<view class="int_tip1">{{gettel0(phone)}}</view>
 				<view class="int_tip" >请输入新的手机号进行验证</view>
 				
 				<view class="input-row"  style="height: 40px;">
@@ -56,8 +56,16 @@
 		onLoad(option) {
 			
 		},
+		computed: mapState(['forcedLogin', 'hasLogin', 'userName','userCard','comapnyName','deptName','phone','cxpsd']),
 		methods: {
-			...mapMutations(['login','setCxpsd']),
+			...mapMutations(['login']),
+			gettel0(tel){
+				// var tel = 18810399133;
+				tel = "" + tel;
+				var reg=/(\d{3})(\d{4})(\d{4})/;
+				var tel1 = tel.replace(reg, "$1 $2 $3")
+				return tel1
+			},
 			gettel(tel){
 				// var tel = 18810399133;
 				tel = "" + tel;
@@ -68,7 +76,7 @@
 			getCode() {
 				let that = this
 			
-				if (that.tel_j == '' || !(/^1\d{10}$/.test(that.tel_j))) {
+				if (that.phone == '' || !(/^1\d{10}$/.test(that.phone))) {
 					wx.showToast({
 						icon: 'none',
 						title: '手机号有误'
@@ -80,22 +88,23 @@
 				} else {
 					that.btnkg = 1
 				}
-				uni.showToast({
-					icon: 'none',
-					title: '发送成功'
-				})
-				that.codetime()
-				that.btnkg= 0
-				return
-				var jkurl = '/sendCode'
+				// uni.showToast({
+				// 	icon: 'none',
+				// 	title: '发送成功'
+				// })
+				// that.codetime()
+				// that.btnkg= 0
+				// return
+				var jkurl = '/userInfo/getVerifyCode?userCode='+that.userCard+'&phone='+that.phone
 				var data = {
-					type: 3,
-					phone: that.account
+					userCode: that.userCard,
+					phone: that.phone
 				}
+				data={}
 				service.get(jkurl, data,
 					function(res) {
 						that.btnkg=0
-						if (res.data.code == 1) {
+						if (res.data.code == 0) {
 			
 							uni.showToast({
 								icon: 'none',

@@ -10,9 +10,9 @@
 						<view>{{userName}}</view>
 						<image src="../../static/img/logout.png" mode="" @tap="bindLogout"></image>
 					</view>
-					<view class="user_name1">身份证号：511082198305063652</view>
-					<view class="user_name1">单位编号：202002035678</view>
-					<view class="user_name1">单位名称：北京市朝阳财税局</view>
+					<view class="user_name1">身份证号：{{userCard}}</view>
+					<view class="user_name1">单位编号：{{deptCode}}</view>
+					<view class="user_name1">单位名称：{{comapnyName+deptName}}</view>
 				</view>
 			</view>
 			<view class="index_list">
@@ -50,7 +50,7 @@
 	} from 'vuex'
 
 	export default {
-		computed: mapState(['forcedLogin', 'hasLogin', 'userName','cxpsd']),
+		computed: mapState(['forcedLogin', 'hasLogin', 'userName','userCard','comapnyName','deptName','deptCode','cxpsd']),
 		onLoad() {
 			if (!this.hasLogin) {
 				uni.showModal({

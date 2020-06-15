@@ -195,8 +195,8 @@
 					return;
 				}
 				var data = {
-					account: v.account,
-					sfz:that.sfz,
+					account: that.account,
+					userCard:that.sfz,
 					code:that.code,
 					password: that.password
 				}

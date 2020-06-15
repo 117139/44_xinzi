@@ -11,7 +11,7 @@
 			<view class="input-group">
 				<view class="input-row ">
 					<text class="title iconfont iconshouji"></text>
-					<m-input class="m-input" type="number" clearable focus v-model="account"   placeholder="请输入手机号码"></m-input>
+					<m-input class="m-input" type="text" clearable focus v-model="account"   placeholder="请输入账号"></m-input>
 				</view>
 				<view class="input-row ">
 					<text class="title iconfont iconcredentials_icon-copy"></text>
@@ -78,7 +78,7 @@
 		},
 		computed: mapState(['forcedLogin']),
 		methods: {
-			...mapMutations(['login']),
+			...mapMutations(['login','login_com']),
 			loginfuc(e) {
 				console.log(e.currentTarget.dataset.type)
 				var type = e.currentTarget.dataset.type
@@ -216,10 +216,17 @@
 				 * 客户端对账号信息进行一些必要的校验。
 				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
 				 */
-				if (that.account == '' || !(/^1\d{10}$/.test(that.account))) {
+				// if (that.account == '' || !(/^1\d{10}$/.test(that.account))) {
+				// 	uni.showToast({
+				// 		icon: 'none',
+				// 		title: '手机号有误'
+				// 	})
+				// 	return
+				// }
+				if (!that.account) {
 					uni.showToast({
 						icon: 'none',
-						title: '手机号有误'
+						title: '请输入账号'
 					})
 					return
 				}
@@ -230,7 +237,14 @@
 					});
 					return;
 				}
-				if (that.password.length < 6) {
+				if (!that.password) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入密码'
+					});
+					return;
+				}
+				/*if (that.password.length < 6) {
 					uni.showToast({
 						icon: 'none',
 						title: '密码最短为 6 个字符'
@@ -252,68 +266,108 @@
 						});
 						return;
 					}
-				}
-				/**
-				 * 下面简单模拟下服务端的处理
-				 * 检测用户账号密码是否在已注册的用户列表中
-				 * 实际开发中，使用 uni.request 将账号信息发送至服务端，客户端在回调函数中获取结果信息。
-				 */
-				var data = {
-					account: that.account,
-					sfz:that.sfz,
-					password: that.password
-				};
-				var jkurl='/loginUser/login'
-				if(that.logintype==1){
-					data = {
-						account: v.account,
-						sfz:that.sfz,
-						code:that.code,
-						password: that.password
-					}
-					jkurl=''
-				}
+				}*/
 				
-				uni.showToast({
-					icon: 'none',
-					title: '操作成功'
-				})
-				that.login('问心');
-				uni.setStorageSync('loginmsg', '问心')
-				setTimeout(() => {
-					uni.reLaunch({
-						url:'../main/main'
-					})
-				}, 1000)
-				return
-				service.post(jkurl, data,
+				var data = {
+					userName: that.account,
+					userCard:that.sfz,
+					passwd: that.password
+				};
+				data={}
+				var jkurl='/loginUser/login'
+				jkurl='/loginUser/login?userName='+that.account+'&userCard='+that.sfz+'&passwd='+that.password
+				// if(that.logintype==1){
+				// 	data = {
+				// 		userName: v.account,
+				// 		userCard:that.sfz,
+				// 		code:that.code,
+				// 		passwd: that.password
+				// 	}
+				// 	jkurl=''
+				// }
+				
+				
+				service.get(jkurl, data,
 					function(res) {
 						that.btnkg = 0
-						if (res.data.code == 1) {
+						if (res.data.code == 0) {
 				
-							uni.showToast({
-								icon: 'none',
-								title: '操作成功'
-							})
-							if(that.logintype==0){
-								that.login(res.data.real_name);
-								uni.setStorageSync('loginmsg', res.data.data)
-								setTimeout(() => {
-									uni.reLaunch({
-										url:'../main/main'
-									})
-								}, 1000)
-							}else if(that.logintype==1){
-								setTimeout(() => {
-									that.logintype=0
-								}, 1000)
+							// uni.showToast({
+							// 	icon: 'none',
+							// 	title: '操作成功'
+							// })
+							var usermsg=res.data.data
+							console.log(typeof usermsg)
+							if(typeof usermsg=='string'){
+								usermsg=JSON.parse(usermsg)
 							}
+							that.login(usermsg);
+							uni.setStorageSync('loginmsg', usermsg)
+							jkurl='/userInfo/getUserInfo?userCard='+that.sfz
+							service.get(jkurl, data,
+								function(res) {
+									that.btnkg = 0
+									if (res.data.code == 0) {
+							
+										uni.showToast({
+											icon: 'none',
+											title: '操作成功'
+										})
+										usermsg=res.data.data
+										console.log(typeof usermsg)
+										if(typeof usermsg=='string'){
+											usermsg=JSON.parse(usermsg)
+										}
+										that.login_com(usermsg)
+										setTimeout(() => {
+											uni.reLaunch({
+												url:'../main/main'
+											})
+										}, 1000)
+										
+									} else {
+										if (res.data.data.msg) {
+										  uni.showToast({
+										    icon: 'none',
+										    title: res.data.data.msg
+										  })
+										} else {
+										  uni.showToast({
+										    icon: 'none',
+										    title: '操作失败'
+										  })
+										}
+									}
+								},
+								function(err) {
+									that.btnkg = 0
+									if (err.data.data.msg) {
+										uni.showToast({
+											icon: 'none',
+											title: err.data.data.msg
+										})
+									} else {
+										uni.showToast({
+											icon: 'none',
+											title: '操作失败'
+										})
+									}
+								}
+							)
+							// if(that.logintype==0){
+								
+								
+							// }else if(that.logintype==1){
+							// 	setTimeout(() => {
+							// 		that.logintype=0
+							// 	}, 1000)
+							// }
 							
 						} else {
-							if (res.data.msg) {
+							if (res.data.data.msg) {
 							  uni.showToast({
 							    icon: 'none',
-							    title: res.data.msg
+							    title: res.data.data.msg
 							  })
 							} else {
 							  uni.showToast({
@@ -325,10 +379,10 @@
 					},
 					function(err) {
 						that.btnkg = 0
-						if (err.data.msg) {
+						if (err.data.data.msg) {
 							uni.showToast({
 								icon: 'none',
-								title: err.data.msg
+								title: err.data.data.msg
 							})
 						} else {
 							uni.showToast({

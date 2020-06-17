@@ -6,7 +6,7 @@
 		</view>
 		<view class="xq_li">
 			<view>姓名</view>
-			<view>张小琴</view>
+			<view>{{datas.name}}</view>
 		</view>
 		<view class="xq_li">
 			<view>身份证号</view>
@@ -22,11 +22,7 @@
 		</view>
 		<view class="xq_li">
 			<view>基础性绩效工资</view>
-			<view>200029环保监测站</view>
-		</view>
-		<view class="xq_li">
-			<view>单位名称</view>
-			<view>200029环保监测站</view>
+			<view>4788.00</view>
 		</view>
 		<view class="xq_li">
 			<view>奖励性绩效工资</view>
@@ -42,11 +38,7 @@
 		</view>
 		<view class="xq_li">
 			<view>独生子女费</view>
-			<view>1000.00</view>
-		</view>
-		<view class="xq_li">
-			<view>综合补助</view>
-			<view>0.00</view>
+			<view>{{datas.onlyChildFee}}</view>
 		</view>
 		<view class="xq_li">
 			<view>补发工资</view>
@@ -88,14 +80,65 @@
 </template>
 
 <script>
+	import service from '../../service.js';
 	export default {
 		data() {
 			return {
-				
+				datas:''
 			}
 		},
+		onLoad() {
+			this.getdata()
+		},
 		methods: {
-			
+			getdata(){
+				var that =this
+				var data={}
+				var jkurl='/salary/selectSaraylDetailOne?id='+1+'&type='+2
+				service.get(jkurl, data,
+					function(res) {
+						that.btnkg = 0
+						if (res.data.code == 0) {
+							var datas=res.data.data
+							console.log(typeof datas)
+							if(typeof datas=='string'){
+								datas=JSON.parse(datas)
+							}
+							console.log(datas)
+							that.datas=datas
+									
+						
+						} else {
+							if (res.data.data.msg) {
+							  uni.showToast({
+							    icon: 'none',
+							    title: res.data.data.msg
+							  })
+							} else {
+							  uni.showToast({
+							    icon: 'none',
+							    title: '操作失败'
+							  })
+							}
+						}
+					},
+					function(err) {
+						that.btnkg = 0
+						if (err.data.data.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: err.data.data.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				)
+				
+			}
 		}
 	}
 </script>

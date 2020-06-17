@@ -1,19 +1,19 @@
 <template>
 	<view class="wrap">
-		<view class="cx_time">请选择起止时间</view>
+		<view class="cx_time">请选择查询时间</view>
 		<view class="cx_list">
-			<picker class="cx_time_pc" mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange" data-type="1">
+			<picker class="cx_time_pc" mode="date" fields	="month" :value="date" :start="startDate" :end="endDate" @change="bindDateChange" data-type="1">
 				<view class="cx_time_pc">
-					<view>开始时间</view>
+					<view>查询时间</view>
 					<view>{{date}}</view>
 				</view>
 			</picker>
-			<picker class="cx_time_pc" mode="date" :value="date1" :start="startDate" :end="endDate" @change="bindDateChange" data-type="2">
+			<!-- <picker class="cx_time_pc" mode="date" :value="date1" :start="startDate" :end="endDate" @change="bindDateChange" data-type="2">
 				<view class="cx_time_pc">
 					<view>结束时间</view>
 					<view>{{date1}}</view>
 				</view>
-			</picker>
+			</picker> -->
 		</view>
 		<view class="sub_btn" @tap="sub">查询</view>
 	</view>
@@ -54,13 +54,14 @@
 				let day = date.getDate();
 
 				if (type === 'start') {
-					year = year - 60;
+					year = year - 3;
 				} else if (type === 'end') {
-					year = year + 2;
+					year = year;
 				}
 				month = month > 9 ? month : '0' + month;;
 				day = day > 9 ? day : '0' + day;
-				return `${year}-${month}-${day}`;
+				// return `${year}-${month}-${day}`;
+				return `${year}-${month}`;
 			},
 			sub(){
 				uni.navigateTo({
@@ -76,7 +77,7 @@
 		width: 100%;
 		background-color: #F5F5F5;
 		background-image: url(../../static/img/images/cxbg_02.png);
-		background-size: 100%;
+		background-size: 100% 170rpx;
 		background-repeat: no-repeat;
 	}
 .cx_list{

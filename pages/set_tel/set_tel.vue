@@ -54,11 +54,36 @@
 			}
 		},
 		onLoad(option) {
-			
+			if (!this.hasLogin) {
+				uni.showModal({
+					title: '未登录',
+					content: '您未登录，需要登录后才能继续',
+					/**
+					 * 如果需要强制登录，不显示取消按钮
+					 */
+					showCancel: !this.forcedLogin,
+					success: (res) => {
+						if (res.confirm) {
+							/**
+							 * 如果需要强制登录，使用reLaunch方式
+							 */
+							if (this.forcedLogin) {
+								uni.reLaunch({
+									url: '../login/login'
+								});
+							} else {
+								uni.navigateTo({
+									url: '../login/login'
+								});
+							}
+						}
+					}
+				});
+			}
 		},
 		computed: mapState(['forcedLogin', 'hasLogin', 'userName','userCard','comapnyName','deptName','phone','cxpsd']),
 		methods: {
-			...mapMutations(['login']),
+			...mapMutations(['login','setPhone']),
 			gettel0(tel){
 				// var tel = 18810399133;
 				tel = "" + tel;
@@ -95,9 +120,9 @@
 				// that.codetime()
 				// that.btnkg= 0
 				// return
-				var jkurl = '/userInfo/getVerifyCode?userCode='+that.userCard+'&phone='+that.phone
+				var jkurl = '/userInfo/getVerifyCode?userCard='+that.userCard+'&phone='+that.phone
 				var data = {
-					userCode: that.userCard,
+					userCard: that.userCard,
 					phone: that.phone
 				}
 				data={}
@@ -161,13 +186,7 @@
 			
 			findPassword() {
 				var that =this
-				if (that.account == '' || !(/^1\d{10}$/.test(that.account))) {
-					wx.showToast({
-						icon: 'none',
-						title: '手机号有误'
-					})
-					return
-				}
+				
 				if (!that.code) {
 					uni.showToast({
 						icon: 'none',
@@ -175,36 +194,44 @@
 					});
 					return;
 				}
-				that.setCxpsd(that.password)
-				uni.showToast({
-					icon:'none',
-					title:'操作成功'
-				})
+				if (that.account == '' || !(/^1\d{10}$/.test(that.account))) {
+					wx.showToast({
+						icon: 'none',
+						title: '手机号有误'
+					})
+					return
+				}
+				// that.setCxpsd(that.password)
+				// uni.showToast({
+				// 	icon:'none',
+				// 	title:'操作成功'
+				// })
 				var data = {
-					account: v.account,
+					account: that.account,
 					sfz:that.sfz,
 					code:that.code,
 					password: that.password
 				}
-				var jkurl=''
-				service.post(jkurl, data,
+				data={}
+				var jkurl='/userInfo/modifyPhone?userCard='+that.userCard+'&oldPhone='+that.phone+'&verifyCode='+that.code+'&newPhone='+that.account
+				service.get(jkurl, data,
 					function(res) {
 						that.btnkg = 0
-						if (res.data.code == 1) {
+						if (res.data.code == 0) {
 				
 							uni.showToast({
 								icon: 'none',
 								title: '操作成功'
 							})
-							
-								that.logout();
-								uni.setStorageSync('loginmsg', res.data.data)
+							that.setPhone(that.account)
+								// that.logout();
+								// uni.setStorageSync('loginmsg', res.data.data)
 								setTimeout(() => {
 									uni.reLaunch({
-										url:'../login/login'
+										url:'../main/main'
 									})
 								}, 1000)
-							
+								
 							
 						} else {
 							if (res.data.msg) {

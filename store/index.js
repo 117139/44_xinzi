@@ -40,6 +40,9 @@ const store = new Vuex.Store({
 		},
 		setCxpsd(state,psd) {
 			state.cxpsd = psd;
+		},
+		setPhone(state,phone) {
+			state.phone = phone;
 		}
 	}
 })

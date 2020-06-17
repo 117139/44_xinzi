@@ -11,7 +11,7 @@
 			<view class="input-group">
 				<view class="input-row ">
 					<text class="title iconfont iconshouji"></text>
-					<m-input class="m-input" type="text" clearable focus v-model="account"   placeholder="请输入账号"></m-input>
+					<m-input class="m-input" type="text" clearable focus v-model="account"   placeholder="请输入姓名"></m-input>
 				</view>
 				<view class="input-row ">
 					<text class="title iconfont iconcredentials_icon-copy"></text>

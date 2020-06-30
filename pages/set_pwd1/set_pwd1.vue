@@ -29,7 +29,7 @@
 		},
 		data() {
 			return {
-				type:'',
+				type:1,
 				btnkg: 0,
 				logintype: '0',
 				yzm_type: 0,
@@ -41,7 +41,9 @@
 			}
 		},
 		onLoad(option) {
-			this.type=option.type
+			if(option.type){
+				this.type=option.type
+			}
 		},
 		methods: {
 			...mapMutations(['login','setCxpsd']),

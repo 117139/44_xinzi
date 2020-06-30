@@ -10,7 +10,7 @@
 				
 			</view>
 			<view class="btn-row">
-				<button v-if="logintype==0" type="primary" class="primary" @tap="findPassword">确认</button>
+				<button v-if="logintype==0" type="primary" class="primary" @tap="getcxwd">确认</button>
 			</view>
 		</view>
 		
@@ -43,102 +43,40 @@
 				code:'',
 			}
 		},
-		computed: mapState(['forcedLogin', 'hasLogin', 'userName','cxpsd']),
-		methods: {
-			...mapMutations(['login','setCxpsd']),
-			gettel(tel){
-				// var tel = 18810399133;
-				tel = "" + tel;
-				var reg=/(\d{3})\d{4}(\d{4})/;
-				var tel1 = tel.replace(reg, "$1****$2")
-				return tel1
-			},
-			getCode() {
-				let that = this
-			
-				if (that.account == '' || !(/^1\d{10}$/.test(that.account))) {
-					wx.showToast({
-						icon: 'none',
-						title: '手机号有误'
-					})
-					return
-				}
-				if (that.btnkg == 1) {
-					return
-				} else {
-					that.btnkg = 1
-				}
-				uni.showToast({
-					icon: 'none',
-					title: '发送成功'
-				})
-				that.codetime()
-				that.btnkg= 0
-				return
-				var jkurl = '/sendCode'
-				var data = {
-					type: 3,
-					phone: that.account
-				}
-				service.get(jkurl, data,
-					function(res) {
-						that.btnkg=0
-						if (res.data.code == 1) {
-			
-							uni.showToast({
-								icon: 'none',
-								title: '发送成功'
-							})
-							that.codetime()
-			
-						} else {
-							if (res.data.msg) {
-								uni.showToast({
-									icon: 'none',
-									title: res.data.msg
-								})
+		onLoad(option) {
+			if (!this.hasLogin) {
+				uni.showModal({
+					title: '未登录',
+					content: '您未登录，需要登录后才能继续',
+					/**
+					 * 如果需要强制登录，不显示取消按钮
+					 */
+					showCancel: !this.forcedLogin,
+					success: (res) => {
+						if (res.confirm) {
+							/**
+							 * 如果需要强制登录，使用reLaunch方式
+							 */
+							if (this.forcedLogin) {
+								uni.reLaunch({
+									url: '../login/login'
+								});
 							} else {
-								uni.showToast({
-									icon: 'none',
-									title: '操作失败'
-								})
+								uni.navigateTo({
+									url: '../login/login'
+								});
 							}
 						}
-					},
-					function(err) {
-						that.btnkg=0
-						if (err.data.message) {
-							uni.showToast({
-								icon: 'none',
-								title: err.data.message
-							})
-						} else {
-							uni.showToast({
-								icon: 'none',
-								title: '操作失败'
-							})
-						}
-					})
-			
-			},
-			codetime() {
-				let that = this
-				let time = 60
-				let st = setInterval(function() {
-					if (time == 0) {
-						that.yzm_type = 0
-						clearInterval(st);
-					} else {
-						let news = time--;
-						// console.log(news)
-						that.yzm_type = 1
-						that.yztime = news
-			
 					}
-				}, 1000);
-			},
+				});
+			}
 			
-			findPassword() {
+			
+		},
+		computed: mapState(['forcedLogin', 'hasLogin','userCard', 'userName','cxpsd']),
+		methods: {
+			...mapMutations(['login','setCxpsd']),
+			getcxwd(){
 				var that =this
 				if (!that.password) {
 					uni.showToast({
@@ -147,6 +85,58 @@
 					});
 					return;
 				}
+				var data={}
+				var jkurl='/loginUser/checkQueryPwd?userCard='+that.userCard+'&queryPwd='+that.password
+				service.get(jkurl, data,
+					function(res) {
+						that.btnkg = 0
+						if (res.data.code == 0) {
+							uni.showToast({
+								icon: 'none',
+								title: '操作成功'
+							})
+							setTimeout(() => {
+								uni.redirectTo({
+									url:'../cx_jg/cx_jg'
+								})
+							}, 1000)
+								
+							
+						} else {
+							
+							if (res.data.data) {
+								console.log(res.data.data)
+							  uni.showToast({
+							    icon: 'none',
+							    title: '操作失败'
+							  })
+							} else {
+							  uni.showToast({
+							    icon: 'none',
+							    title: '操作失败'
+							  })
+							}
+						}
+					},
+					function(err) {
+						that.btnkg = 0
+						if (err.data.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: err.data.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				)
+			},
+			
+			findPassword() {
+				
 				
 				var data = {
 					password: that.password
@@ -168,7 +158,7 @@
 				service.post(jkurl, data,
 					function(res) {
 						that.btnkg = 0
-						if (res.data.code == 1) {
+						if (res.data.code == 0) {
 				
 							uni.showToast({
 								icon: 'none',

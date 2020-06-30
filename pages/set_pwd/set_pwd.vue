@@ -6,7 +6,7 @@
 				
 				<view class="int_tip">设置查询密码</view>
 				<view class="input-row" style="height: 40px;">
-					<input type="text"  disabled="" placeholder="请输入手机号"  :value="gettel(account)"></input>
+					<input type="text"  disabled="" placeholder="请输入手机号"  :value="gettel(phone)"></input>
 					<view v-if="yzm_type==0" class="getyzm" @tap="getCode">获取验证码</view>
 					<view v-if="yzm_type==1" class="getyzm">{{yztime}}s</view>
 				</view>
@@ -14,7 +14,8 @@
 					<input type="text" v-model="code" placeholder="请输入验证码" ></input>
 				</view>
 				<view class="input-row"  style="height: 40px;">
-					<input type="text" v-model="password" placeholder="请输入要设置的查询密码" ></input>
+					<m-input type="password" displayable v-model="password" placeholder="请输入要设置的查询密码"></m-input>
+					<!-- <input type="text" v-model="password" placeholder="请输入要设置的查询密码" ></input> -->
 				</view>
 			</view>
 			<view class="btn-row">
@@ -40,20 +41,49 @@
 		},
 		data() {
 			return {
-				type:'',
+				type:1,
 				btnkg: 0,
 				logintype: '0',
 				yzm_type: 0,
 				yztime: 60,
-				account: '18300000000',
-				sfz:'',
+				
 				password: '',
 				code:'',
 			}
 		},
 		onLoad(option) {
-			this.type=option.type
+			if (!this.hasLogin) {
+				uni.showModal({
+					title: '未登录',
+					content: '您未登录，需要登录后才能继续',
+					/**
+					 * 如果需要强制登录，不显示取消按钮
+					 */
+					showCancel: !this.forcedLogin,
+					success: (res) => {
+						if (res.confirm) {
+							/**
+							 * 如果需要强制登录，使用reLaunch方式
+							 */
+							if (this.forcedLogin) {
+								uni.reLaunch({
+									url: '../login/login'
+								});
+							} else {
+								uni.navigateTo({
+									url: '../login/login'
+								});
+							}
+						}
+					}
+				});
+			}
+			if(option.type){
+				this.type=option.type
+			}
+			
 		},
+		computed: mapState(['forcedLogin', 'hasLogin', 'userName','userCard','comapnyName','deptName','phone','cxpsd']),
 		methods: {
 			...mapMutations(['login','setCxpsd']),
 			gettel(tel){
@@ -66,7 +96,7 @@
 			getCode() {
 				let that = this
 			
-				if (that.account == '' || !(/^1\d{10}$/.test(that.account))) {
+				if (that.phone == '' || !(/^1\d{10}$/.test(that.phone))) {
 					wx.showToast({
 						icon: 'none',
 						title: '手机号有误'
@@ -78,22 +108,13 @@
 				} else {
 					that.btnkg = 1
 				}
-				uni.showToast({
-					icon: 'none',
-					title: '发送成功'
-				})
-				that.codetime()
-				that.btnkg= 0
-				return
-				var jkurl = '/sendCode'
-				var data = {
-					type: 3,
-					phone: that.account
-				}
+				
+				var jkurl = '/userInfo/getVerifyCode?phone='+that.phone+'&userCard='+that.userCard
+				var data = {}
 				service.get(jkurl, data,
 					function(res) {
 						that.btnkg=0
-						if (res.data.code == 1) {
+						if (res.data.code == 0) {
 			
 							uni.showToast({
 								icon: 'none',
@@ -164,42 +185,35 @@
 					});
 					return;
 				}
-				that.setCxpsd(that.password)
-				uni.redirectTo({
-					url:'/pages/set_pwd1/set_pwd1?type='+that.type
-				})
-				var data = {
-					account: that.account,
-					sfz:that.sfz,
-					code:that.code,
-					password: that.password
-				}
-				var jkurl=''
-				return
-				service.post(jkurl, data,
+				var data={}
+				var jkurl='/loginUser/modifyPw?pwdType=1&phone='+that.phone+'&userCard='+that.userCard+'&verifyCode='+that.code+'&passwd='+that.password
+				service.get(jkurl, data,
 					function(res) {
 						that.btnkg = 0
-						if (res.data.code == 1) {
+						if (res.data.code == 0) {
 				
 							uni.showToast({
 								icon: 'none',
 								title: '操作成功'
 							})
-							
-								that.logout();
-								uni.setStorageSync('loginmsg', res.data.data)
-								setTimeout(() => {
-									uni.reLaunch({
-										url:'../login/login'
-									})
-								}, 1000)
+							that.setCxpsd(that.password)
+							uni.redirectTo({
+								url:'/pages/set_pwd1/set_pwd1?type='+that.type
+							})
+								// that.logout();
+								// uni.setStorageSync('loginmsg','')
+								// setTimeout(() => {
+								// 	uni.reLaunch({
+								// 		url:'../login/login'
+								// 	})
+								// }, 1000)
 							
 							
 						} else {
-							if (res.data.msg) {
+							if (res.data.message) {
 							  uni.showToast({
 							    icon: 'none',
-							    title: res.data.msg
+							    title: res.data.message
 							  })
 							} else {
 							  uni.showToast({

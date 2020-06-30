@@ -5,7 +5,8 @@
 			<view class="input-group">
 				<view class="int_tip1">当前注册手机号</view>
 				<view class="int_tip1">{{gettel0(phone)}}</view>
-				<view class="int_tip" >请输入新的手机号进行验证</view>
+				<!-- <view class="int_tip" >请输入新的手机号进行验证</view> -->
+				<view class="int_tip" style="padding-left: 10px;">请先进行验证</view>
 				
 				<view class="input-row"  style="height: 40px;">
 					<input type="text" v-model="code" placeholder="请输入验证码" ></input>
@@ -121,10 +122,7 @@
 				// that.btnkg= 0
 				// return
 				var jkurl = '/userInfo/getVerifyCode?userCard='+that.userCard+'&phone='+that.phone
-				var data = {
-					userCard: that.userCard,
-					phone: that.phone
-				}
+				var data = {}
 				data={}
 				service.get(jkurl, data,
 					function(res) {
@@ -153,10 +151,10 @@
 					},
 					function(err) {
 						that.btnkg=0
-						if (err.data.message) {
+						if (err.data.data) {
 							uni.showToast({
 								icon: 'none',
-								title: err.data.message
+								title: err.data.data
 							})
 						} else {
 							uni.showToast({
@@ -207,10 +205,10 @@
 				// 	title:'操作成功'
 				// })
 				var data = {
-					account: that.account,
-					sfz:that.sfz,
-					code:that.code,
-					password: that.password
+					// account: that.account,
+					// sfz:that.sfz,
+					// code:that.code,
+					// password: that.password
 				}
 				data={}
 				var jkurl='/userInfo/modifyPhone?userCard='+that.userCard+'&oldPhone='+that.phone+'&verifyCode='+that.code+'&newPhone='+that.account

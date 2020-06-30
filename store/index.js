@@ -18,6 +18,7 @@ const store = new Vuex.Store({
 		deptCode:'',
 		phone:'',
 		id:'',
+		qyType:'',  //1事业  2行政
 		cxpsd:''
 	},
 	mutations: {
@@ -33,6 +34,7 @@ const store = new Vuex.Store({
 			state.deptCode = usermsg.deptCode || '';
 			state.phone = usermsg.phone || '';
 			state.id = usermsg.id || '';
+			state.qyType = usermsg.type || '';
 		},
 		logout(state) {
 			state.userName = "";

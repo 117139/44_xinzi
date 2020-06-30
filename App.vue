@@ -1,7 +1,14 @@
 <script>
+import {
+		mapState,
+		mapMutations
+	} from 'vuex'
+
 	export default {
+		computed: mapState(['forcedLogin', 'hasLogin']),
 		onLaunch: function() {
 			console.log('App Launch');
+			
 		},
 		onShow: function() {
 			console.log('App Show');

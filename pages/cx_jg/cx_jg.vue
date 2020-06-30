@@ -27,6 +27,7 @@
 				date1: this.getDate(),
 			}
 		},
+		
 		computed: {
 			startDate() {
 				return this.getDate('start');
@@ -54,9 +55,9 @@
 				let day = date.getDate();
 
 				if (type === 'start') {
-					year = year - 3;
+					year = 1970;
 				} else if (type === 'end') {
-					year = year;
+					year = year+10;
 				}
 				month = month > 9 ? month : '0' + month;;
 				day = day > 9 ? day : '0' + day;
@@ -65,8 +66,9 @@
 			},
 			sub(){
 				uni.navigateTo({
-					url:'../cx_list/cx_list'
+					url:'../details/details?month='+this.date
 				})
+				
 			}
 		}
 	}

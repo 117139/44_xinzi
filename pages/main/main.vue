@@ -12,7 +12,7 @@
 					</view>
 					<view class="user_name1">身份证号：{{userCard}}</view>
 					<view class="user_name1">单位编号：{{deptCode}}</view>
-					<view class="user_name1">单位名称：{{comapnyName+deptName}}</view>
+					<view class="user_name1">单位名称：{{comapnyName}}</view>
 				</view>
 			</view>
 			<view class="index_list">
@@ -44,13 +44,14 @@
 </template>
 
 <script>
+	import service from '../../service.js';
 	import {
 		mapState,
 		mapMutations
 	} from 'vuex'
 
 	export default {
-		computed: mapState(['forcedLogin', 'hasLogin', 'userName','userCard','comapnyName','deptName','deptCode','cxpsd']),
+		computed: mapState(['forcedLogin', 'hasLogin', 'userName','userCard','phone','comapnyName','deptName','deptCode','cxpsd']),
 		onLoad() {
 			if (!this.hasLogin) {
 				uni.showModal({
@@ -77,14 +78,62 @@
 						}
 					}
 				});
+			}else{
+				this.getcxwd()
 			}
 		},
 		methods: {
-			...mapMutations(['logout']),
+			...mapMutations(['logout','setCxpsd']),
 			bindLogin() {
 				uni.navigateTo({
 					url: '../login/login',
 				});
+			},
+			getcxwd(){
+				var that =this
+				//loginUser/getQueryPwd
+				var data={}
+				var jkurl='/loginUser/getQueryPwd?userCard='+that.userCard+'&phone='+that.phone
+				service.get(jkurl, data,
+					function(res) {
+						that.btnkg = 0
+						if (res.data.code == 0) {
+				
+							if(res.data.data){
+								that.setCxpsd(res.data.data)
+							}
+								
+							
+						} else {
+							console.log('查询权限失败')
+							// if (res.data.msg) {
+							//   uni.showToast({
+							//     icon: 'none',
+							//     title: res.data.msg
+							//   })
+							// } else {
+							//   uni.showToast({
+							//     icon: 'none',
+							//     title: '操作失败'
+							//   })
+							// }
+						}
+					},
+					function(err) {
+						that.btnkg = 0
+						if (err.data.msg) {
+							uni.showToast({
+								icon: 'none',
+								title: err.data.msg
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '操作失败'
+							})
+						}
+					}
+				)
 			},
 			jump(e) {
 				var that = this

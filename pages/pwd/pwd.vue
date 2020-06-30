@@ -12,15 +12,15 @@
 					<text class="title iconfont iconshouji"></text>
 					<m-input class="m-input" type="text" clearable focus v-model="account" placeholder="请输入手机号码"></m-input>
 				</view>
+				<view class="input-row ">
+					<text class="title iconfont iconcredentials_icon-copy"></text>
+					<m-input class="m-input" type="text" clearable focus v-model="sfz" placeholder="输入身份证号"></m-input>
+				</view>
 				<view class="input-row" >
 					<text class="title iconfont iconyanzheng"></text>
 					<input type="text" v-model="code" placeholder="请输入验证码" ></input>
 					<view v-if="yzm_type==0" class="getyzm" @tap="getCode">获取验证码</view>
 					<view v-if="yzm_type==1" class="getyzm">{{yztime}}s</view>
-				</view>
-				<view class="input-row ">
-					<text class="title iconfont iconcredentials_icon-copy"></text>
-					<m-input class="m-input" type="text" clearable focus v-model="sfz" placeholder="输入身份证号"></m-input>
 				</view>
 				<view class="input-row">
 					<text class="title  iconfont iconmima01"></text>
@@ -71,7 +71,7 @@
 			}
 		},
 		methods: {
-			...mapMutations(['login']),
+			...mapMutations(['login','logout']),
 			getCode() {
 				let that = this
 			
@@ -79,6 +79,13 @@
 					wx.showToast({
 						icon: 'none',
 						title: '手机号有误'
+					})
+					return
+				}
+				if (that.sfz == '' ) {
+					wx.showToast({
+						icon: 'none',
+						title: '请先输入身份证号'
 					})
 					return
 				}
@@ -94,15 +101,12 @@
 				// that.codetime()
 				// that.btnkg= 0
 				// return
-				var jkurl = '/sendCode'
-				var data = {
-					type: 3,
-					phone: that.account
-				}
+				var jkurl = '/userInfo/getVerifyCode?phone='+that.account+'&userCard='+that.sfz
+				var data = {}
 				service.get(jkurl, data,
 					function(res) {
 						that.btnkg=0
-						if (res.data.code == 1) {
+						if (res.data.code == 0) {
 			
 							uni.showToast({
 								icon: 'none',
@@ -126,10 +130,10 @@
 					},
 					function(err) {
 						that.btnkg=0
-						if (err.data.message) {
+						if (err.data.data) {
 							uni.showToast({
 								icon: 'none',
-								title: err.data.message
+								title: err.data.data
 							})
 						} else {
 							uni.showToast({
@@ -166,17 +170,17 @@
 					})
 					return
 				}
-				if (!that.code) {
-					uni.showToast({
-						icon: 'none',
-						title: '请输入验证码'
-					});
-					return;
-				}
 				if (that.sfz.length < 1) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入身份证号'
+					});
+					return;
+				}
+				if (!that.code) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入验证码'
 					});
 					return;
 				}
@@ -195,16 +199,16 @@
 					return;
 				}
 				var data = {
-					account: that.account,
-					userCard:that.sfz,
-					code:that.code,
-					password: that.password
+					// account: that.account,
+					// userCard:that.sfz,
+					// code:that.code,
+					// password: that.password
 				}
-				var jkurl='/loginUser/modifyPw'
-				service.post(jkurl, data,
+				var jkurl='/loginUser/modifyPw?pwdType=0&phone='+that.account+'&userCard='+that.sfz+'&verifyCode='+that.code+'&passwd='+that.password
+				service.get(jkurl, data,
 					function(res) {
 						that.btnkg = 0
-						if (res.data.code == 1) {
+						if (res.data.code == 0) {
 				
 							uni.showToast({
 								icon: 'none',
@@ -212,7 +216,7 @@
 							})
 							
 								that.logout();
-								uni.setStorageSync('loginmsg', res.data.data)
+								uni.setStorageSync('loginmsg','')
 								setTimeout(() => {
 									uni.reLaunch({
 										url:'../login/login'
@@ -221,10 +225,10 @@
 							
 							
 						} else {
-							if (res.data.msg) {
+							if (res.data.message) {
 							  uni.showToast({
 							    icon: 'none',
-							    title: res.data.msg
+							    title: res.data.message
 							  })
 							} else {
 							  uni.showToast({

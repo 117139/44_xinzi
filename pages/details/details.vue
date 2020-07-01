@@ -2,8 +2,8 @@
 	<view class="wrap">
 		<!-- {{type}} -->
 		<!-- {{type==1}} -->
-		<!-- 事业 -->
-		<block  v-if="qyType==1">
+		<!-- 行政 -->
+		<block  v-if="qyType==2">
 			<view class="xq_li">
 				<view>单位名称</view>
 				<view>{{datas.unitName?datas.unitName:'无'}}</view>
@@ -22,123 +22,119 @@
 			</view>
 			<view class="xq_li">
 				<view>实发工资</view>
-				<view>{{datas.realSalary?datas.realSalary:'无'}}</view>
+				<view>{{datas.realSalary?datas.realSalary:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>级别岗位工资</view>
-				<view>{{datas.stationLevelSalary?datas.stationLevelSalary:'无'}}</view>
+				<view>{{datas.stationLevelSalary?datas.stationLevelSalary:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>试用期工资</view>
-				<view>{{datas.trySalary?datas.trySalary:'无'}}</view>
+				<view>{{datas.trySalary?datas.trySalary:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>警衔津贴</view>
-				<view>{{datas.policeRankSubsidy?datas.policeRankSubsidy:'无'}}</view>
+				<view>{{datas.policeRankSubsidy?datas.policeRankSubsidy:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>工作性津贴</view>
-				<view>{{datas.workSubsidy?datas.workSubsidy:'无'}}</view>
+				<view>{{datas.workSubsidy?datas.workSubsidy:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>生活性补贴</view>
-				<view>{{datas.lifeSubsidy?datas.lifeSubsidy:'无'}}</view>
+				<view>{{datas.lifeSubsidy?datas.lifeSubsidy:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>工资补差</view>
-				<view>{{datas.supplyAgain?datas.supplyAgain:'无'}}</view>
+				<view>{{datas.supplyAgain?datas.supplyAgain:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>其他</view>
-				<view>{{datas.otherFee?datas.otherFee:'无'}}</view>
+				<view>{{datas.otherFee?datas.otherFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>通讯工具补助</view>
-				<view>{{datas.comunicationSubsidy?datas.comunicationSubsidy:'无'}}</view>
+				<view>{{datas.comunicationSubsidy?datas.comunicationSubsidy:'0'}}</view>
 			</view>			
 			<view class="xq_li">
 				<view>岗位津贴</view>
-				<view>{{datas.positionSalary?datas.positionSalary:'无'}}</view>
+				<view>{{datas.positionSalary?datas.positionSalary:'0'}}</view>
 			</view>		
 			<view class="xq_li">
 				<view>独生子女费</view>
-				<view>{{datas.onlyChildFee?datas.onlyChildFee:'无'}}</view>
+				<view>{{datas.onlyChildFee?datas.onlyChildFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>冬季取暖补贴</view>
-				<view>{{datas.warmFee?datas.warmFee:'无'}}</view>
+				<view>{{datas.warmFee?datas.warmFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>检察审判津贴</view>
-				<view>{{datas.trialFee?datas.trialFee:'无'}}</view>
+				<view>{{datas.trialFee?datas.trialFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>补发项</view>
-				<view>{{datas.reissueFee?datas.reissueFee:'无'}}</view>
+				<view>{{datas.reissueFee?datas.reissueFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>年终一次性奖金</view>
-				<view>{{datas.yearsBonus?datas.yearsBonus:'无'}}</view>
+				<view>{{datas.yearsBonus?datas.yearsBonus:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>未休年假补贴</view>
-				<view>{{datas.vacationFee?datas.vacationFee:'无'}}</view>
+				<view>{{datas.vacationFee?datas.vacationFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>临时性补贴</view>
-				<view>{{datas.tempSubsidy?datas.tempSubsidy:'无'}}</view>
+				<view>{{datas.tempSubsidy?datas.tempSubsidy:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>交通补助</view>
-				<view>{{datas.trafficSubsidy?datas.trafficSubsidy:'无'}}</view>
+				<view>{{datas.trafficSubsidy?datas.trafficSubsidy:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>应发工资</view>
-				<view>{{datas.shouldSum?datas.shouldSum:'无'}}</view>
+				<view>{{datas.shouldSum?datas.shouldSum:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>住房公积金正常缴存</view>
-				<view>{{datas.housingFee?datas.housingFee:'无'}}</view>
+				<view>{{datas.housingFee?datas.housingFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>住房公积金补扣项</view>
-				<view>{{datas.housingCutFee?datas.housingCutFee:'无'}}</view>
+				<view>{{datas.housingCutFee?datas.housingCutFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>医疗保险个人缴存额</view>
-				<view>{{datas.safeFee?datas.safeFee:'无'}}</view>
+				<view>{{datas.safeFee?datas.safeFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>医疗保险个人缴存额补扣</view>
-				<view>{{datas.safeCutFee?datas.safeCutFee:'无'}}</view>
+				<view>{{datas.safeCutFee?datas.safeCutFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>个人所得税</view>
-				<view>{{datas.selfFee?datas.selfFee:'无'}}</view>
+				<view>{{datas.selfFee?datas.selfFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>其他扣款</view>
-				<view>{{datas.otherCutFee?datas.otherCutFee:'无'}}</view>
+				<view>{{datas.otherCutFee?datas.otherCutFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>扣款合计</view>
-				<view>{{datas.cutSum?datas.cutSum:'无'}}</view>
+				<view>{{datas.cutSum?datas.cutSum:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>计税工资</view>
-				<view>{{datas.taxSalary?datas.taxSalary:'无'}}</view>
+				<view>{{datas.taxSalary?datas.taxSalary:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>养老金</view>
-				<view>{{datas.oldFee?datas.oldFee:'无'}}</view>
-			</view>
-			<view class="xq_li">
-				<view>财政统发金额</view>
-				<view>{{datas.financeFee?datas.financeFee:'无'}}</view>
+				<view>{{datas.oldFee?datas.oldFee:'0'}}</view>
 			</view>
 		</block>
-		<!-- 行政 -->
-		<block class="wrap" v-if="qyType==2">
+		<!-- 事业 -->
+		<block v-if="qyType==1">
 			<view class="xq_li">
 				<view>单位名称</view>
 				<view>{{datas.unitName?datas.unitName:'无'}}</view>
@@ -153,67 +149,67 @@
 			</view>
 			<view class="xq_li">
 				<view>岗位工资</view>
-				<view>{{datas.positionSalary?datas.positionSalary:'无'}}</view>
+				<view>{{datas.positionSalary?datas.positionSalary:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>薪级工资</view>
-				<view>{{datas.paySalary?datas.paySalary:'无'}}</view>
+				<view>{{datas.paySalary?datas.paySalary:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>基础性绩效工资</view>
-				<view>{{datas.baseSalary?datas.baseSalary:'无'}}</view>
+				<view>{{datas.baseSalary?datas.baseSalary:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>奖励性绩效工资</view>
-				<view>{{datas.encourageSalary?datas.encourageSalary:'无'}}</view>
+				<view>{{datas.encourageSalary?datas.encourageSalary:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>临时性补贴</view>
-				<view>{{datas.tempSubsidy?datas.tempSubsidy:'无'}}</view>
+				<view>{{datas.tempSubsidy?datas.tempSubsidy:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>综合补助</view>
-				<view>{{datas.multiplySubsidy?datas.multiplySubsidy:'无'}}</view>
+				<view>{{datas.multiplySubsidy?datas.multiplySubsidy:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>独生子女费</view>
-				<view>{{datas.onlyChildFee?datas.onlyChildFee:'无'}}</view>
+				<view>{{datas.onlyChildFee?datas.onlyChildFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>补发工资</view>
-				<view>{{datas.supplyAgain?datas.supplyAgain:'无'}}</view>
+				<view>{{datas.supplyAgain?datas.supplyAgain:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>其他</view>
-				<view>{{datas.otherFee?datas.otherFee:'无'}}</view>
+				<view>{{datas.otherFee?datas.otherFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>应发合计</view>
-				<view>{{datas.shouldSum?datas.shouldSum:'无'}}</view>
+				<view>{{datas.shouldSum?datas.shouldSum:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>代扣住房公积金小计</view>
-				<view>{{datas.housingFee?datas.housingFee:'无'}}</view>
+				<view>{{datas.housingFee?datas.housingFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>代扣失业金小计</view>
-				<view>{{datas.loseWorkFee?datas.loseWorkFee:'无'}}</view>
+				<view>{{datas.loseWorkFee?datas.loseWorkFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>代扣基本医疗保险小计</view>
-				<view>{{datas.safeFee?datas.safeFee:'无'}}</view>
+				<view>{{datas.safeFee?datas.safeFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>当月代扣养老保险</view>
-				<view>{{datas.oldFee?datas.oldFee:'无'}}</view>
+				<view>{{datas.oldFee?datas.oldFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>当月代扣个人年金</view>
-				<view>{{datas.selfFee?datas.selfFee:'无'}}</view>
+				<view>{{datas.selfFee?datas.selfFee:'0'}}</view>
 			</view>
 			<view class="xq_li">
 				<view>财政统发金额</view>
-				<view>{{datas.financeFee?datas.financeFee:'无'}}</view>
+				<view>{{datas.financeFee?datas.financeFee:'0'}}</view>
 			</view>
 		</block>
 	</view>

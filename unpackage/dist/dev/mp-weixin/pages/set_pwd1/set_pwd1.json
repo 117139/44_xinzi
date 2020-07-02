@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "设置成功",
+  "usingComponents": {
+    "m-input": "/components/m-input"
+  }
+}

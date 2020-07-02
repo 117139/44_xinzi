@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "设置查询密码",
+  "usingComponents": {
+    "m-input": "/components/m-input"
+  }
+}

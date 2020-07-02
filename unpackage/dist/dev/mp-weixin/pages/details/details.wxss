@@ -1,0 +1,27 @@
+
+.wrap.data-v-1cbd3880 {
+	width: 100%;
+	min-height: 100vh;
+	background: #fff;
+}
+.xq_li.data-v-1cbd3880 {
+	width: 100%;
+	padding: 0 28rpx;
+	box-sizing: border-box;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	height: 40px;
+	border-bottom: 1px solid #eee;
+	color: #333;
+}
+.xq_li view+view.data-v-1cbd3880 {
+	color: #656565;
+}
+

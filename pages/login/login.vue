@@ -303,6 +303,7 @@
 								usermsg=JSON.parse(usermsg)
 							}
 							that.login(usermsg);
+							sessionStorage.setItem("usermsg", JSON.stringify(usermsg));
 							uni.setStorageSync('loginmsg', usermsg)
 							jkurl='/userInfo/getUserInfo?userCard='+that.sfz
 							service.get(jkurl, data,
@@ -319,6 +320,8 @@
 										if(typeof usermsg=='string'){
 											usermsg=JSON.parse(usermsg)
 										}
+										sessionStorage.setItem("login", true);
+										sessionStorage.setItem("usermsg1", JSON.stringify(usermsg));
 										that.login_com(usermsg)
 										setTimeout(() => {
 											uni.reLaunch({

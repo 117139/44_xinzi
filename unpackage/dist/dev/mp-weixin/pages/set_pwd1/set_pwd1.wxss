@@ -1,0 +1,32 @@
+
+.wrap.data-v-1bc252da{
+	width: 695rpx;
+	margin: 0 auto;
+}
+.set_ok.data-v-1bc252da{
+	padding-top: 100px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	font-size: 13px;
+	color: #999;
+	margin-bottom: 50px;
+}
+.set_ok image.data-v-1bc252da{
+	width:62px;
+	height:62px;
+	border-radius: 50%;
+	margin-bottom: 22px;
+}
+uni-button.primary.data-v-1bc252da{
+	border-radius: 5px;
+	background: #2A78DF;
+}
+

@@ -3,18 +3,44 @@ import {
 		mapState,
 		mapMutations
 	} from 'vuex'
-
+var guanbi
 	export default {
-		computed: mapState(['forcedLogin', 'hasLogin']),
+		computed: mapState(['forcedLogin', 'hasLogin',]),
 		onLaunch: function() {
+			clearTimeout(guanbi) 
+			var that=this
 			console.log('App Launch');
-			
+			if(sessionStorage.getItem("login")=='true'){
+				console.log(1)
+				var usermsg=sessionStorage.getItem("usermsg")
+				var usermsg1=sessionStorage.getItem("usermsg1")
+				that.login(JSON.parse(usermsg));
+				that.login_com(JSON.parse(usermsg1));
+			}else{
+				uni.reLaunch({
+					url:'./pages/login/login'
+				})
+			}
 		},
 		onShow: function() {
 			console.log('App Show');
+			
 		},
 		onHide: function() {
+			var that=this
+			guanbi=setTimeout(function (){
+				sessionStorage.setItem("login", false);
+				that.logout()
+			},100)
+			
 			console.log('App Hide');
+		},
+		onUnload() {
+			
+			console.log('App Unload');
+		},
+		methods:{
+			...mapMutations(['login','logout','login_com']),
 		}
 	}
 </script>

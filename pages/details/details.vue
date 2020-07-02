@@ -267,6 +267,36 @@
 
 
 		},
+		onShow() {
+			if (!this.hasLogin) {
+				uni.showModal({
+					title: '未登录',
+					content: '您未登录，需要登录后才能继续',
+					/**
+					 * 如果需要强制登录，不显示取消按钮
+					 */
+					showCancel: !this.forcedLogin,
+					success: (res) => {
+						if (res.confirm) {
+							/**
+							 * 如果需要强制登录，使用reLaunch方式
+							 */
+							if (this.forcedLogin) {
+								uni.reLaunch({
+									url: '../login/login'
+								});
+							} else {
+								uni.navigateTo({
+									url: '../login/login'
+								});
+							}
+						}
+					}
+				});
+			}else{
+				
+			}
+		},
 		computed: mapState(['forcedLogin', 'hasLogin', 'userCard', 'userName', 'qyType']),
 		methods: {
 			getdata(month) {
@@ -284,6 +314,16 @@
 						if (res.data.code == 0) {
 							var datas = res.data.data
 							console.log(typeof datas)
+							if(datas=='null'){
+								uni.showToast({
+									icon:'none',
+									title:'暂无数据'
+								})
+								setTimeout(function (){
+									uni.navigateBack()
+								},1500)
+								return
+							}
 							if (typeof datas == 'string') {
 								datas = JSON.parse(datas)
 							}

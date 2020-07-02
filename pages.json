@@ -8,7 +8,7 @@
 		}, {
 			"path": "pages/main/main",
 			"style": {
-				"navigationBarTitleText": "登录模板"
+				"navigationBarTitleText": "薪资查询系统"
 			}
 		}, {
 			"path": "pages/reg/reg",

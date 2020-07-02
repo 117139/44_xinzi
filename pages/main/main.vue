@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<!-- {{hasLogin}} -->
 		<view v-if="hasLogin" class="hello">
 			<view class="my_box">
 				<view class="user_tx">
@@ -35,8 +36,37 @@
 			</view>
 		</view>
 		<view v-if="!hasLogin" class="hello">
-			<view class="title">
-				您好 游客。
+			<view class="my_box">
+				<view class="user_tx">
+					<image src="../../static/img/images/tx_03.png" mode="aspectFill"></image>
+				</view>
+				<view class="user_msg">
+					<view class="user_name">
+						<view>{{userName}}</view>
+						<image src="../../static/img/logout.png" mode="" @tap="bindLogout"></image>
+					</view>
+					<view class="user_name1">身份证号：{{userCard}}</view>
+					<view class="user_name1">单位编号：{{deptCode}}</view>
+					<view class="user_name1">单位名称：{{comapnyName}}</view>
+				</view>
+			</view>
+			<view class="index_list">
+				<view v-if="cxpsd" class="index_li"  @tap="jump" data-url="/pages/cx_pwd/cx_pwd">
+					<image src="../../static/img/images/index_btn_05.jpg"></image>
+					<text>查询薪资</text>
+				</view>
+				<view v-else class="index_li"  @tap="jump" data-url="/pages/set_pwd/set_pwd">
+					<image src="../../static/img/images/index_btn_05.jpg"></image>
+					<text>查询薪资</text>
+				</view>
+				<view class="index_li" @tap="jump" data-url="/pages/set_pwd/set_pwd?type=1">
+					<image src="../../static/img/images/index_btn_07.jpg"></image>
+					<text>设置查询密码</text>
+				</view>
+				<view class="index_li" @tap="jump" data-url="/pages/set_tel/set_tel">
+					<image src="../../static/img/images/index_btn_09.jpg"></image>
+					<text>修改手机号</text>
+				</view>
 			</view>
 			
 		</view>
@@ -80,6 +110,37 @@
 				});
 			}else{
 				this.getcxwd()
+			}
+		},
+		onShow() {
+			console.log('main onshow')
+			if (!this.hasLogin) {
+				uni.showModal({
+					title: '未登录',
+					content: '您未登录，需要登录后才能继续',
+					/**
+					 * 如果需要强制登录，不显示取消按钮
+					 */
+					showCancel: !this.forcedLogin,
+					success: (res) => {
+						if (res.confirm) {
+							/**
+							 * 如果需要强制登录，使用reLaunch方式
+							 */
+							if (this.forcedLogin) {
+								uni.reLaunch({
+									url: '../login/login'
+								});
+							} else {
+								uni.navigateTo({
+									url: '../login/login'
+								});
+							}
+						}
+					}
+				});
+			}else{
+				// this.getcxwd()
 			}
 		},
 		methods: {

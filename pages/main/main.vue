@@ -3,9 +3,9 @@
 		<!-- {{hasLogin}} -->
 		<view v-if="hasLogin" class="hello">
 			<view class="my_box">
-				<view class="user_tx">
+				<!-- <view class="user_tx">
 					<image src="../../static/img/images/tx_03.png" mode="aspectFill"></image>
-				</view>
+				</view> -->
 				<view class="user_msg">
 					<view class="user_name">
 						<view>{{userName}}</view>
@@ -37,9 +37,9 @@
 		</view>
 		<view v-if="!hasLogin" class="hello">
 			<view class="my_box">
-				<view class="user_tx">
+				<!-- <view class="user_tx">
 					<image src="../../static/img/images/tx_03.png" mode="aspectFill"></image>
-				</view>
+				</view> -->
 				<view class="user_msg">
 					<view class="user_name">
 						<view>{{userName}}</view>
